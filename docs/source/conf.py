@@ -462,6 +462,8 @@ def get_columns(table_str, file_content, this_table_columns):
         shape = re.search(r"(shape).*geometry", column_details)
         text_not_null_search = re.search(r"(.*)\stext NOT NULL", column_details)
         text_search = re.search(r"(.*)\stext", column_details)
+        date_search = re.search(r"(.*)\sdate(?!.*NOT NULL)", column_details)  # does not contain NOT NULL
+        date_not_null_search = re.search(r"(.*)\sdate\sNOT NULL", column_details)  # contains NOT NULL
 
         if pri_key_serial_search is not None:
             this_column = []
@@ -471,9 +473,9 @@ def get_columns(table_str, file_content, this_table_columns):
             column_str = table_str + "." + pri_key2
             this_column.append(pri_key_str)  #column Name
             this_column.append("integer")  #Data Type
-            this_column.append(" ")  # Length
-            this_column.append("32")  #Precision
-            this_column.append("0")  # Scale
+            this_column.append("32")  # Length
+            this_column.append(" ")  #Precision
+            this_column.append(" ")  # Scale
             this_column.append("No") # Allows Nulls
             column_comment_out = get_column_comments(column_str, file_content)
             this_column.append(column_comment_out)  # Description
@@ -487,9 +489,9 @@ def get_columns(table_str, file_content, this_table_columns):
             column_str = table_str + "." + pri_key2
             this_column.append(pri_key_str)  #column Name
             this_column.append("integer")  #Data Type
-            this_column.append(" ")  # Length
-            this_column.append("32")  #Precision
-            this_column.append("0")  # Scale
+            this_column.append("32")  # Length
+            this_column.append(" ")  #Precision
+            this_column.append(" ")  # Scale
             this_column.append("No") # Allows Nulls
             column_comment_out = get_column_comments(column_str, file_content)
             this_column.append(column_comment_out)  # Description
@@ -559,9 +561,9 @@ def get_columns(table_str, file_content, this_table_columns):
             column_str = table_str + "." + integer_column_name
             this_column.append(integer_column_name) #column Name
             this_column.append("integer") #Data Type
-            this_column.append(" ") #Length
-            this_column.append("32") #Precision
-            this_column.append("0") #scale
+            this_column.append("32") #Length
+            this_column.append(" ") #Precision
+            this_column.append(" ") #scale
             this_column.append("Yes") # Allows Nulls
             column_comment_out = get_column_comments(column_str, file_content)
             this_column.append(column_comment_out) #Description
@@ -573,9 +575,9 @@ def get_columns(table_str, file_content, this_table_columns):
             column_str = table_str + "." + integer_column_name
             this_column.append(integer_column_name) #column Name
             this_column.append("integer") #Data Type
-            this_column.append(" ") #Length
-            this_column.append("32") #Precision
-            this_column.append("0") #scale
+            this_column.append("32") #Length
+            this_column.append(" ") #Precision
+            this_column.append(" ") #scale
             this_column.append("No") # Allows Nulls
             column_comment_out = get_column_comments(column_str, file_content)
             this_column.append(column_comment_out) #Description
@@ -588,7 +590,7 @@ def get_columns(table_str, file_content, this_table_columns):
             numeric_scale = numeric_search.group(3)
             column_str = table_str + "." + numeric_column_name
             this_column.append(numeric_column_name) #column Name
-            this_column.append("integer") #Data Type
+            this_column.append("numeric") #Data Type
             this_column.append(" ") #Length
             this_column.append(str(numeric_precision)) #Precision
             this_column.append(str(numeric_scale)) #scale
@@ -604,8 +606,8 @@ def get_columns(table_str, file_content, this_table_columns):
             numeric_scale = numeric_not_null_search.group(3)
             column_str = table_str + "." + numeric_column_name
             this_column.append(numeric_column_name) #column Name
-            this_column.append("integer") #Data Type
-            this_column.append(" ") #Length
+            this_column.append("numeric") #Data Type
+            this_column.append("32") #Length
             this_column.append(str(numeric_precision)) #Precision
             this_column.append(str(numeric_scale)) #scale
             this_column.append("No") # Allows Nulls
@@ -654,6 +656,36 @@ def get_columns(table_str, file_content, this_table_columns):
             column_comment_out = get_column_comments(column_str, file_content)
             this_column.append(column_comment_out) #Description
             this_table_columns.append(this_column)
+
+        elif date_search is not None:
+            this_column = []
+            date_column_name = date_search.group(1)
+            column_str = table_str + "." + date_column_name
+            this_column.append(date_column_name) #column Name
+            this_column.append("date") #Data Type
+            this_column.append("4") #Length
+            this_column.append(" ") #Precision
+            this_column.append(" ") #scale
+            this_column.append("Yes") # Allows Nulls
+            column_comment_out = get_column_comments(column_str, file_content)
+            this_column.append(column_comment_out) #Description
+            this_table_columns.append(this_column)
+
+        elif date_not_null_search is not None:
+            this_column = []
+            date_not_null_column_name = date_search.group(1)
+            column_str = table_str + "." + date_not_null_column_name
+            this_column.append(date_not_null_column_name) #column Name
+            this_column.append("date") #Data Type
+            this_column.append("4") #Length
+            this_column.append(" ") #Precision
+            this_column.append(" ") #scale
+            this_column.append("No") # Allows Nulls
+            column_comment_out = get_column_comments(column_str, file_content)
+            this_column.append(column_comment_out) #Description
+            this_table_columns.append(this_column)
+
+
 
 
     return this_table_columns
