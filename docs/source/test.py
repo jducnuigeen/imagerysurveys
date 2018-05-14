@@ -447,10 +447,12 @@ def get_columns(table_str, file_content, this_table_columns):
     search_str = r"CREATE TABLE IF NOT EXISTS " + table_str + r"\s\(([^\;]*)\)\;"
     column_search = re.search(search_str, file_content)
     columns = column_search.group(0)
+    print "columns: ", columns
     columns_strip = [x.strip() for x in columns.split("    ,")]
 
 
     for column_details in columns_strip:
+        print "column_details: ", column_details
         pri_key_serial_search = re.search(r"(.*)\sserial PRIMARY KEY", column_details)
         pri_key_search = re.search(r"(.*)\sinteger PRIMARY KEY", column_details)
         character_varying_search = re.search(r"(.*)\scharacter varying\((.*?)\)\s(?!NOT NULL)", column_details)  #does not contain "NOT NULL"
@@ -557,6 +559,7 @@ def get_columns(table_str, file_content, this_table_columns):
         elif integer_search is not None:
             this_column = []
             integer_column_name = integer_search.group(1)
+            print "integer_column_name: ", integer_column_name
             column_str = table_str + "." + integer_column_name
             this_column.append(integer_column_name) #column Name
             this_column.append("integer") #Data Type
@@ -681,24 +684,3 @@ files_to_read = get_filenames()
 context_out = setup_html_context(files_to_read)
 
 
-
-
-# This is required to allow Sphinx to read data dynamically
-def rstjinja(app, docname, source):
-    """
-    Render our pages as a jinja template for fancy templating goodness.
-    """
-    # Make sure we're outputting HTML
-    if app.builder.format != 'html':
-        return
-    src = source[0]
-    rendered = app.builder.templates.render_string(
-        src, app.config.html_context
-    )
-    source[0] = rendered
-
-def setup(app):
-    app.connect("source-read", rstjinja)
-    app.add_stylesheet('custom.css')
-
-html_context = context_out
