@@ -433,8 +433,6 @@ def get_column_comments(column_str, file_content):
                     template_url = "`{schema_table} <https://imagerysurveys-test.readthedocs.io/en/latest/published_data.html#table-{table_name_hyphens}>`_"
                     foreign_link = template_url.format(schema_table=schema_and_table_strip, table_name_hyphens=hyphens)
                     column_comment_result_strip = front_comment + foreign_key_comment + foreign_link + " table" + end_comment
-            #else:
-                #column_comment_result_strip = " "
 
     if column_comment_search is None:
         column_comment_result_strip = " "
@@ -463,6 +461,7 @@ def get_columns(table_str, file_content, this_table_columns):
         numeric_not_null_search = re.search(r"(.*)\snumeric\((\d{1,2})\,\s(\d{1,2}).*NOT NULL", column_details)
         shape = re.search(r"(shape).*geometry", column_details)
         text_not_null_search = re.search(r"(.*)\stext NOT NULL", column_details)
+        text_search = re.search(r"(.*)\stext", column_details)
 
         if pri_key_serial_search is not None:
             this_column = []
@@ -638,6 +637,20 @@ def get_columns(table_str, file_content, this_table_columns):
             this_column.append(" ") #Precision
             this_column.append(" ") #scale
             this_column.append("No") # Allows Nulls
+            column_comment_out = get_column_comments(column_str, file_content)
+            this_column.append(column_comment_out) #Description
+            this_table_columns.append(this_column)
+
+        elif text_search is not None:
+            this_column = []
+            text_column_name = text_search.group(1)
+            column_str = table_str + "." + text_column_name
+            this_column.append(text_column_name) #column Name
+            this_column.append("text") #Data Type
+            this_column.append(" ") #Length
+            this_column.append(" ") #Precision
+            this_column.append(" ") #scale
+            this_column.append("Yes") # Allows Nulls
             column_comment_out = get_column_comments(column_str, file_content)
             this_column.append(column_comment_out) #Description
             this_table_columns.append(this_column)
