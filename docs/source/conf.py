@@ -457,7 +457,7 @@ def get_columns(table_str, file_content, this_table_columns):
         character_varying_not_null_search = re.search(r"(.*)\scharacter varying\((.*?)\)\sNOT NULL", column_details)  #does contain "NOT NULL"
         timestamp_search = re.search(r"(.*)\stimestamptz\s(?!NOT NULL)", column_details)  #does not contain "NOT NULL"
         timestamp_not_null_search = re.search(r"^(.*)\stimestamptz\sNOT NULL.*", column_details)  #does contain "NOT NULL"
-        integer_search = re.search(r"^(.*)\sinteger\s(?!.*NOT NULL).*", column_details)  #does not contain "NOT NULL"
+        integer_search = re.search(r"^(.*)\sinteger(?!.*NOT NULL)", column_details)  #does not contain "NOT NULL"
         integer_not_null_search = re.search(r"^(.*)\sinteger\sNOT NULL.*", column_details)  #does contain "NOT NULL"
         numeric_search = re.search(r"(.*)\snumeric\((\d{1,2})\,\s(\d{1,2})\)\s(?!NOT NULL)", column_details)
         numeric_not_null_search = re.search(r"(.*)\snumeric\((\d{1,2})\,\s(\d{1,2}).*NOT NULL", column_details)
