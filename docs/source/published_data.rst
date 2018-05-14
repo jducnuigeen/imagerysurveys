@@ -13,13 +13,13 @@ Data Model
 Needs content.
 
 
-Schema: {{ schema_gen_aerial["name"] }}
+Schema: {{ schema_gen_aerial_lds["name"] }}
 --------------------------------------------------------
 
-Description: {{ schema_gen_aerial["comment"] }}
+Description: {{ schema_gen_aerial_lds["comment"] }}
 
 
-{% for item in schema_tab_aerial  %}
+{% for item in schema_tab_aerial_lds  %}
 .. _table-name-{{item.table_nam}}:
 
 Table: {{ item.table_nam }}
