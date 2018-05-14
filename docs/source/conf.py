@@ -673,7 +673,7 @@ def get_columns(table_str, file_content, this_table_columns):
 
         elif date_not_null_search is not None:
             this_column = []
-            date_not_null_column_name = date_search.group(1)
+            date_not_null_column_name = date_not_null_search.group(1)
             column_str = table_str + "." + date_not_null_column_name
             this_column.append(date_not_null_column_name) #column Name
             this_column.append("date") #Data Type
