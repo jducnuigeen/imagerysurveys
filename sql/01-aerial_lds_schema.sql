@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS aerial_lds.imagery_surveys (
     , imagery_id integer
     , index_id integer
     , set_order integer
-    , ground_sample_distance decimal(6,4)
+    , ground_sample_distance numeric(6, 4)
     , accuracy text
     , supplier text
     , licensor text
