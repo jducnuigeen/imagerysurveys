@@ -9,6 +9,5 @@ Table of Contents:
 
    introduction
    published_data
-   internal_data
 
 
